@@ -131,9 +131,9 @@ def sample_and_test(rank, gpu, args):
     first_stage_model = AutoencoderKL.from_pretrained(args.pretrained_autoencoder_ckpt).to(device)
 
     ckpt = torch.load(
-        "./saved_info/latent_flow/{}/{}/model_{}.pth".format(args.dataset, args.exp, args.epoch_id),
-        map_location=device,
-    )
+        "../saved_info/latent_flow/{}/{}/model_{}.pth".format(args.dataset, args.exp, args.epoch_id),
+        map_location=device, weights_only=True,
+    )  # Modified weights_only argument in load
 
     print("Finish loading model")
     # loading weights from ddp in single gpu
@@ -145,7 +145,7 @@ def sample_and_test(rank, gpu, args):
     del ckpt
 
     iters_needed = args.n_sample // args.batch_size
-    save_dir = "./generated_samples/{}/exp{}_ep{}_m{}".format(args.dataset, args.exp, args.epoch_id, args.method)
+    save_dir = "../generated_samples/{}/exp{}_ep{}_m{}".format(args.dataset, args.exp, args.epoch_id, args.method)
     
     if args.method in FIXER_SOLVER:
         save_dir += "_s{}".format(args.num_steps)

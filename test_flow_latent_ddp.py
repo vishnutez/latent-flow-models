@@ -56,7 +56,7 @@ def main(args):
 
     first_stage_model = AutoencoderKL.from_pretrained(args.pretrained_autoencoder_ckpt).to(device)
 
-    ckpt = torch.load("./saved_info/latent_flow/{}/{}/model_{}.pth".format(args.dataset, args.exp, args.epoch_id))
+    ckpt = torch.load("../saved_info/latent_flow/{}/{}/model_{}.pth".format(args.dataset, args.exp, args.epoch_id)) # Modified weights_only as True
     print("Finish loading model")
     # loading weights from ddp in single gpu
     for key in list(ckpt.keys()):
@@ -66,7 +66,7 @@ def main(args):
 
     del ckpt
 
-    save_dir = "./generated_samples/{}/exp{}_ep{}_m{}".format(args.dataset, args.exp, args.epoch_id, args.method)
+    save_dir = "../generated_samples/{}/exp{}_ep{}_m{}".format(args.dataset, args.exp, args.epoch_id, args.method)
     # save_dir = "./generated_samples/{}".format(args.dataset)
     if args.method in FIXER_SOLVER:
         save_dir += "_s{}".format(args.num_steps)
@@ -85,7 +85,7 @@ def main(args):
         if args.num_classes in [None, 1]:
             model_kwargs = {}
         else:
-            y = generator.randint(0, args.num_classes, (num_samples,), device=device)
+            y = generator.randint(args.label_dim, args.label_dim+1, (num_samples,), device=device)  # Modified to choose only the specified label
             # Setup classifier-free guidance:
             if args.cfg_scale > 1.0:
                 x = torch.cat([x, x], 0)
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     parser.add_argument("--num_in_channels", type=int, default=3, help="in channel image")
     parser.add_argument("--num_out_channels", type=int, default=3, help="in channel image")
     parser.add_argument("--nf", type=int, default=256, help="channel of image")
-    parser.add_argument("--n_sample", type=int, default=50000, help="number of sampled images")
+    parser.add_argument("--n_sample", type=int, default=10, help="number of sampled images")
     parser.add_argument("--centered", action="store_false", default=True, help="-1,1 scale")
     parser.add_argument("--resamp_with_conv", type=bool, default=True)
     parser.add_argument("--num_res_blocks", type=int, default=2, help="number of resnet blocks per scale")

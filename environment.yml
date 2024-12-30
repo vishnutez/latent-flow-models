@@ -1,0 +1,17 @@
+name: latent-flow-matching
+channels:
+  - conda-forge
+dependencies:
+  - lmdb
+  - diffusers
+  - torchdiffeq
+  - scikit-image
+  - pip:
+      - ml_collections
+      - omegaconf
+      - timm
+      - ninja
+      - blobfile
+      - accelerate
+      - einop
+      - opencv-python

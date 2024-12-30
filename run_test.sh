@@ -29,7 +29,7 @@ else
         --nf ${BASE_CH} --ch_mult ${CH_MULT} --attn_resolution ${ATTN_RES} --num_res_blocks 2 \
         --master_port $MASTER_PORT --num_process_per_node 1 \
         --method ${METHOD} --num_steps ${STEPS} \
-        --model_type ${MODEL_TYPE} --num_classes 1 --label_dropout 0. \
+        --model_type ${MODEL_TYPE} --num_classes 1001 --label_dropout 0. \
         # --measure_time \
         # --use_karras_samplers \
         # --compute_nfe \
